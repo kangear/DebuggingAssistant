@@ -2,6 +2,8 @@
 #define DIALOG_H
 
 #include <QDialog>
+#include "ui_dialog.h"
+#include <QtCore>
 
 namespace Ui {
 class Dialog;
@@ -15,6 +17,13 @@ public:
     explicit Dialog(QWidget *parent = 0);
     ~Dialog();
     bool is_connect;
+    void update_result(int level, const QString qstring);
+    void device_not_connect();
+    void check_tag(QTextEdit* textedit);
+    const static int msg_alert = 0;
+    const static int msg_notify = 1;
+    const static int msg_info = 2;
+    const static int msg_succeed = 3;
 
 private slots:
     void on_pushButton_reboot_released();
@@ -32,6 +41,10 @@ private slots:
     void on_pushButton_mult_run_released();
 
     void on_pushButton_update_apk_released();
+
+    void on_pushButton_update_hardware_released();
+
+    void on_pushButton_update_services_jni_released();
 
 private:
     Ui::Dialog *ui;
