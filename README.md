@@ -3,4 +3,4 @@ DebuggingAssistant
 
 Android Debug Assistant
 
-https://raw.githubusercontent.com/kangear/DebuggingAssistant/master/images-folde/preview.png
+![image](https://raw.githubusercontent.com/kangear/DebuggingAssistant/master/images-folde/preview.png)
