@@ -1,7 +1,19 @@
 #ifndef BACKUP_H
 #define BACKUP_H
-#include "ui_dialog.h"
-#include <QtCore>
+
+#include <QtCore/QVariant>
+#include <QtGui/QAction>
+#include <QtGui/QApplication>
+#include <QtGui/QButtonGroup>
+#include <QtGui/QCheckBox>
+#include <QtGui/QDialog>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QHeaderView>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+#include <QtGui/QTextEdit>
+#include <QtGui/QWidget>
 
 class backup
 {

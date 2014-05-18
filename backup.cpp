@@ -1,9 +1,21 @@
 #include "backup.h"
 #include <stdio.h>
 #include <string>
-#include "ui_dialog.h"
+
+#include <QtCore/QVariant>
+#include <QtGui/QAction>
+#include <QtGui/QApplication>
+#include <QtGui/QButtonGroup>
+#include <QtGui/QCheckBox>
+#include <QtGui/QDialog>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QHeaderView>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+#include <QtGui/QTextEdit>
+#include <QtGui/QWidget>
 #include <QtCore>
-#include "dialog.h"
 
 backup::backup()
 {
@@ -34,9 +46,11 @@ int backup::do_cmd_return_str(const char* cmd, QTextEdit* textedit)
     char buf[1024];
     fp = popen(cmd,"r");
     if (fp==NULL) return -1;
+    QString endHtml = "</font><br>";
+    QString line;
     while(fgets(buf,1024,fp)!=NULL)
     {
-        backup::update_result(textedit, QString(QLatin1String(buf)) % "</font><br>");
+        backup::update_result(textedit, QString(QLatin1String(buf)) % endHtml);
     }
 
     ret = pclose(fp);

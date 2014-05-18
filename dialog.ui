@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>652</width>
-    <height>393</height>
+    <height>412</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,19 +24,6 @@
    </property>
    <property name="text">
     <string>设置</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_mult_run">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>350</y>
-     <width>211</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>多步执行</string>
    </property>
   </widget>
   <widget class="QWidget" name="layoutWidget">
@@ -103,49 +90,51 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QTextEdit" name="textEdit_result">
+   <property name="geometry">
+    <rect>
+     <x>343</x>
+     <y>120</y>
+     <width>291</width>
+     <height>211</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>261</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_4">
-    <item>
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>连接状态:</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_connect_state">
-      <property name="text">
-       <string>连接状态</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_Refresh">
-      <property name="text">
-       <string>刷新</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>50</y>
      <width>275</width>
-     <height>284</height>
+     <height>390</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>连接状态:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_connect_state">
+        <property name="text">
+         <string>连接状态</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_Refresh">
+        <property name="text">
+         <string>刷新</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
@@ -363,6 +352,42 @@
      </layout>
     </item>
     <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_12">
+      <item>
+       <widget class="QCheckBox" name="checkBox_update_vold">
+        <property name="minimumSize">
+         <size>
+          <width>180</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>180</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="sizeIncrement">
+         <size>
+          <width>180</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>更新vold</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_update_vold">
+        <property name="text">
+         <string>执行</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
      <layout class="QHBoxLayout" name="horizontalLayout_11">
       <item>
        <widget class="QCheckBox" name="checkBox_update_hardware">
@@ -434,17 +459,14 @@
       </item>
      </layout>
     </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_mult_run">
+      <property name="text">
+       <string>多步执行</string>
+      </property>
+     </widget>
+    </item>
    </layout>
-  </widget>
-  <widget class="QTextEdit" name="textEdit_result">
-   <property name="geometry">
-    <rect>
-     <x>343</x>
-     <y>120</y>
-     <width>291</width>
-     <height>211</height>
-    </rect>
-   </property>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

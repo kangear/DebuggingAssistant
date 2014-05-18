@@ -104,7 +104,7 @@ void Dialog::on_pushButton_update_services_released()
     on_pushButton_Refresh_released();
     if(true == is_connect)
     {
-        int ret = backup::do_cmd_return_str("adb push /home/kangear/ybk-hw/ybkMisc/out/target/product/rk30sdk/system/framework/framework.jar /system/framework/ 2>&1", ui->textEdit_result);
+        int ret = backup::do_cmd_return_str("adb push /home/kangear/ybk-hw/ybkMisc/out/target/product/rk30sdk/system/framework/services.jar /system/framework/ 2>&1", ui->textEdit_result);
         if(ret != 0)
             update_result(msg_alert, "Update services java Error!\n");
         else
@@ -133,20 +133,41 @@ void Dialog::on_pushButton_mult_run_released()
 
     on_pushButton_Refresh_released();
     if(true != is_connect)
+    {
+        device_not_connect();
         return;
-
+    }
     ui->pushButton_mult_run->setEnabled(false);
-    if(ui->checkBox_update_services->checkState() == Qt::Checked)
-        on_pushButton_update_services_released();
 
+    // remount system
+    if(ui->checkBox_remount_system->checkState() == Qt::Checked)
+        on_pushButton_remount_system_released();
+
+    // remount root
+    if(ui->checkBox_remount_root->checkState() == Qt::Checked)
+        on_pushButton_remount_root_released();
+
+    // update services framework
     if(ui->checkBox_update_framework->checkState() == Qt::Checked)
         on_pushButton_update_framework_released();
 
+    // update services java
+    if(ui->checkBox_update_services->checkState() == Qt::Checked)
+        on_pushButton_update_services_released();
+
+    // update services jni
+    if(ui->checkBox_update_services_jni->checkState() == Qt::Checked)
+        on_pushButton_update_services_jni_released();
+
+    // update apk
     if(ui->checkBox_update_apk->checkState() == Qt::Checked)
         on_pushButton_update_apk_released();
 
+    // update hardware.so
+    if(ui->checkBox_update_hardware->checkState() == Qt::Checked)
+        on_pushButton_update_hardware_released();
 
-
+    // reboot device
     if(ui->checkBox_reboot->checkState() == Qt::Checked)
         on_pushButton_reboot_released();
 
@@ -170,6 +191,7 @@ void Dialog::on_pushButton_update_hardware_released()
         device_not_connect();
 }
 
+// update services jni
 void Dialog::on_pushButton_update_services_jni_released()
 {
     on_pushButton_Refresh_released();
@@ -189,8 +211,6 @@ void Dialog::on_pushButton_update_services_jni_released()
 
 void Dialog::update_result(int level, const QString qstring)
 {
-    check_tag(ui->textEdit_result);
-
     QString line = qstring;
     QString alertHtml = "<font color=\"Red\">";
     QString notifyHtml = "<font color=\"Lime\">";
@@ -212,17 +232,23 @@ void Dialog::update_result(int level, const QString qstring)
 
 void Dialog::device_not_connect()
 {
-    check_tag(ui->textEdit_result);
     update_result(msg_alert, "Device is not connect!\n");
 }
 
-void Dialog::check_tag(QTextEdit* textedit)
+// update vold.bin
+void Dialog::on_pushButton_update_vold_released()
 {
-//    QString endHtml = "</font><br>";
-//    QString line = "-------------------------------------" % endHtml;
-//    if(textedit->toPlainText() != "")
-//        backup::update_result(ui->textEdit_result, line);
+    on_pushButton_Refresh_released();
+    if(true == is_connect)
+    {
+        int ret = backup::do_cmd_return_str("adb push /home/kangear/ybk-hw/ybkMisc/out/target/product/rk30sdk/system/bin/vold /system/bin && adb shell setprop ctl.stop vold && adb shell setprop ctl.start vold 2>&1", ui->textEdit_result);
+        if(ret != 0)
+            update_result(msg_alert, "Update vold Failed!\n");
+        else
+            update_result(msg_succeed, "Update vold Succeed!\n");
+    }
+    else
+    {
+        device_not_connect();
+    }
 }
-
-
-
