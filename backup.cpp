@@ -48,6 +48,7 @@ int backup::do_cmd_return_val(const char *cmd, const char* input_cmd)
 
 int backup::do_cmd_return_str(QString cmd_str, QTextEdit* textedit)
 {
+    qDebug() << cmd_str;
     char*  cmd_char = NULL;
     QByteArray ba = cmd_str.toLatin1();
     cmd_char=ba.data();

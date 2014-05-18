@@ -116,7 +116,7 @@ void Dialog::on_pushButton_update_framework_released()
     on_pushButton_Refresh_released();
     if(true == is_connect)
     {
-        int ret = backup::do_cmd_return_str("adb push /home/kangear/ybk-hw/ybkMisc/out/target/product/rk30sdk/system/framework/framework.jar /system/framework/ 2>&1", ui->textEdit_result);
+        int ret = backup::do_cmd_return_str(get_cmd_update_framework_jar(), ui->textEdit_result);
         if(ret != 0)
             update_result(msg_alert, "Update framework Error!\n");
         else
@@ -132,7 +132,7 @@ void Dialog::on_pushButton_update_services_released()
     on_pushButton_Refresh_released();
     if(true == is_connect)
     {
-        int ret = backup::do_cmd_return_str("adb push /home/kangear/ybk-hw/ybkMisc/out/target/product/rk30sdk/system/framework/services.jar /system/framework/ 2>&1", ui->textEdit_result);
+        int ret = backup::do_cmd_return_str(get_cmd_update_services_jar(), ui->textEdit_result);
         if(ret != 0)
             update_result(msg_alert, "Update services java Error!\n");
         else
@@ -225,7 +225,7 @@ void Dialog::on_pushButton_update_services_jni_released()
     on_pushButton_Refresh_released();
     if(true == is_connect)
     {
-        int ret = backup::do_cmd_return_str("adb push /home/kangear/ybk-hw/ybkMisc/out/target/product/rk30sdk/system/lib/libandroid_servers.so /system/lib/ 2>&1", ui->textEdit_result);
+        int ret = backup::do_cmd_return_str(get_cmd_update_servers_so(), ui->textEdit_result);
         if(ret != 0)
             update_result(msg_alert, "Update services jni now Error!\n");
         else
@@ -304,6 +304,7 @@ void Dialog::on_pushButton_update_vold_released()
             update_result(msg_alert, "Update vold Failed!\n");
         else
         {
+            // restart vold
             backup::do_cmd_return_str("adb shell setprop ctl.stop vold && adb shell setprop ctl.start vold 2>&1", ui->textEdit_result);
             update_result(msg_succeed, "Update vold Succeed!\n");
         }
