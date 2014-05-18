@@ -18,6 +18,9 @@ public:
     ~Dialog();
     volatile bool is_connect;
     volatile bool is_current_thread_run;
+    volatile bool is_target_product_path_exist;
+    volatile bool is_path_saved;
+    volatile bool is_can_run;
     void update_result(int level, const QString qstring);
     void device_not_connect();
     const static int msg_alert = 0;
@@ -49,18 +52,57 @@ private slots:
     void on_pushButton_update_vold_released();
     void on_pushButton_released();
 
+    void on_pushButton_edit_path_released();
+    bool check_path();
+
+    void on_lineEdit_android_source_textChanged(const QString &arg1);
+
+    void on_lineEdit_target_product_textChanged(const QString &arg1);
+
 private:
     Ui::Dialog *ui;
 
+// public func
+public:
+    void err_log(const QString info);
+    bool check_if_can_run(bool is_print_log);
+    bool check_if_device_connect();
 
 private:
-    QPushButton *push_button[10];
+#define PUSH_BUTTON_MAX_NUMBER 20
+    QPushButton *push_button[PUSH_BUTTON_MAX_NUMBER];
     void fill_all_push_button(QPushButton *push_button[10], int length);
     void update_ui(bool is_connect);
     void update_ui();
     void update_button_state(bool is_able, QPushButton *push_button[], int length);
     void update_file_change_light(void);
     void on_create();
+    QString target_product_path;
+    void update_target_product_path();
+    void update_target_file_path();
+
+    //absolute relative
+    // framework_jar_relative_path
+    // FRAMEWORK_JAR_ABSOLUTE_PATH = target_product_path + "/" + FRAMEWORK_JAR_RELATIVE_PATH;
+    //        framework.jar system/framework/framework.jar
+    //         services.jar system/framework/services.jar
+    //libandroid_servers.so system/lib/libandroid_servers.so
+    //                 vold system/bin/vold
+    QString framework_jar_absolute_path;
+    QString services_jar_absolute_path;
+    QString servers_so_absolute_path;
+    QString vold_bin_absolute_path;
+
+    // const final
+    QString framework_jar_relative_path;
+    QString services_jar_relative_path;
+    QString servers_so_relative_path;
+    QString vold_bin_relative_path;
+
+    QString get_cmd_update_framework_jar();
+    QString get_cmd_update_services_jar();
+    QString get_cmd_update_servers_so();
+    QString get_cmd_update_vold_bin();
 };
 
 #endif // DIALOG_H

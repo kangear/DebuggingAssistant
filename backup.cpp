@@ -44,6 +44,16 @@ int backup::do_cmd_return_val(const char *cmd, const char* input_cmd)
     return ret/256;
 }
 
+
+
+int backup::do_cmd_return_str(QString cmd_str, QTextEdit* textedit)
+{
+    char*  cmd_char = NULL;
+    QByteArray ba = cmd_str.toLatin1();
+    cmd_char=ba.data();
+    do_cmd_return_str(cmd_char ,textedit);
+}
+
 int backup::do_cmd_return_str(const char* cmd, QTextEdit* textedit)
 {
     int ret = 0;

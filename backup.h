@@ -23,6 +23,7 @@ public:
     static bool do_remount_system();
     static int do_cmd_return_str(const char *cmd, QTextEdit* textedit);
     static void update_result(QTextEdit* textedit, const QString qstring);
+    static int do_cmd_return_str(QString cmd_str, QTextEdit* textedit);
 
 private:
     static int do_cmd_return_val(const char *cmd, const char* input_cmd);
