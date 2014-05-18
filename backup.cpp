@@ -27,6 +27,11 @@ bool backup::is_connect()
     return do_cmd_return_val("adb shell > /dev/null 2>&1", "exit\r") == 0 ? true : false;
 }
 
+bool backup::do_remount_system()
+{
+    return do_cmd_return_val("adb shell", "su && busybox mount -o remount,rw /system && exit && exit\r") == 0 ? true : false;
+}
+
 int backup::do_cmd_return_val(const char *cmd, const char* input_cmd)
 {
     int ret = 0;
