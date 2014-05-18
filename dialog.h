@@ -21,6 +21,8 @@ public:
     volatile bool is_target_product_path_exist;
     volatile bool is_path_saved;
     volatile bool is_can_run;
+    bool debug;
+    void update_result(int level, bool is_endline, const QString qstring);
     void update_result(int level, const QString qstring);
     void device_not_connect();
     const static int msg_alert = 0;

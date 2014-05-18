@@ -6,36 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>652</width>
+    <width>721</width>
     <height>412</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Android调试助手</string>
   </property>
-  <widget class="QPushButton" name="pushButton_Settings">
-   <property name="geometry">
-    <rect>
-     <x>670</x>
-     <y>190</y>
-     <width>51</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>设置</string>
-   </property>
-  </widget>
-  <widget class="QTextEdit" name="textEdit_result">
-   <property name="geometry">
-    <rect>
-     <x>343</x>
-     <y>120</y>
-     <width>291</width>
-     <height>211</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
@@ -408,17 +385,17 @@
    <property name="geometry">
     <rect>
      <x>343</x>
-     <y>120</y>
-     <width>291</width>
-     <height>211</height>
+     <y>130</y>
+     <width>361</width>
+     <height>271</height>
     </rect>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_edit_path">
    <property name="geometry">
     <rect>
-     <x>600</x>
-     <y>0</y>
+     <x>670</x>
+     <y>10</y>
      <width>41</width>
      <height>27</height>
     </rect>
@@ -427,12 +404,12 @@
     <string>Edit</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>341</x>
-     <y>30</y>
-     <width>301</width>
+     <y>40</y>
+     <width>371</width>
      <height>79</height>
     </rect>
    </property>
@@ -531,14 +508,9 @@
     </item>
    </layout>
   </widget>
-  <zorder>pushButton_Settings</zorder>
   <zorder>layoutWidget</zorder>
   <zorder>layoutWidget</zorder>
   <zorder>textEdit_result</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>textEdit_result</zorder>
-  <zorder>label_2</zorder>
-  <zorder>label_path_title</zorder>
   <zorder>pushButton_edit_path</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

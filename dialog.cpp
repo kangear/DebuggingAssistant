@@ -258,6 +258,27 @@ void Dialog::update_result(int level, const QString qstring)
     backup::update_result(ui->textEdit_result, line);
 }
 
+void Dialog::update_result(int level, bool is_endline, const QString qstring)
+{
+    QString line = qstring;
+    QString alertHtml = "<font color=\"Red\">";
+    QString notifyHtml = "<font color=\"Lime\">";
+    QString infoHtml = "<font color=\"Black\">";
+    QString succeedHtml = "<font color=\"Blue\">";
+    QString endHtml = "</font><br>";
+
+    switch(level)
+    {
+        case msg_alert: line = alertHtml % line % endHtml + "--------------------------------"; break;
+        case msg_notify: line = notifyHtml % line; break;
+        case msg_info: line = infoHtml % line; break;
+        case msg_succeed: line = succeedHtml % line % endHtml + "--------------------------------"; break;
+        default: line = infoHtml % line; break;
+    }
+    line = line % endHtml;
+    backup::update_result(ui->textEdit_result, line);
+}
+
 void Dialog::device_not_connect()
 {
     update_result(msg_alert, "No such file or directory!\n");
@@ -277,16 +298,19 @@ void Dialog::on_pushButton_update_vold_released()
     if(QFile(framework_jar_absolute_path).exists())
     {
         //int ret = backup::do_cmd_return_str("adb push /home/kangear/ybk-hw/ybkMisc/out/target/product/rk30sdk/system/bin/vold /system/bin && adb shell setprop ctl.stop vold && adb shell setprop ctl.start vold 2>&1", ui->textEdit_result);
-        update_result(msg_succeed, get_cmd_update_framework_jar());
+        if(debug) update_result(msg_info,"$ " + get_cmd_update_framework_jar());
         int ret = backup::do_cmd_return_str(get_cmd_update_framework_jar(), ui->textEdit_result);
         if(ret != 0)
             update_result(msg_alert, "Update vold Failed!\n");
         else
+        {
+            backup::do_cmd_return_str("adb shell setprop ctl.stop vold && adb shell setprop ctl.start vold 2>&1", ui->textEdit_result);
             update_result(msg_succeed, "Update vold Succeed!\n");
+        }
     }
     else
     {
-        device_not_connect();
+        update_result(msg_alert, "No such file or directory!\n");
     }
 }
 
@@ -295,7 +319,6 @@ void Dialog::fill_all_push_button(QPushButton *push_button[10], int length)
     for(int i=0; i<length; i++)
         push_button[i] = NULL;
 
-    push_button[0] = ui->pushButton_Settings;
     push_button[1] = ui->pushButton_remount_system;
     push_button[2] = ui->pushButton_remount_root;
     push_button[3] = ui->pushButton_update_framework;
@@ -318,7 +341,8 @@ void Dialog::on_pushButton_released()
 
 void Dialog::update_ui(bool disable)
 {
-    update_button_state(disable, push_button, PUSH_BUTTON_MAX_NUMBER);
+    check_if_can_run(false);
+    update_button_state(is_can_run, push_button, PUSH_BUTTON_MAX_NUMBER);
 }
 
 void Dialog::update_ui()
@@ -337,6 +361,9 @@ void Dialog::update_button_state(bool is_able, QPushButton *push_button[], int l
 
 void Dialog::on_create()
 {
+    // if debug
+    debug = false;
+
     fill_all_push_button(push_button, PUSH_BUTTON_MAX_NUMBER);
 
     // init sth.
