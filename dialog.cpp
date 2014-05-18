@@ -9,8 +9,12 @@ Dialog::Dialog(QWidget *parent) :
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
+    on_create();
+
     ui->textEdit_result->setFont (QFont ("OldEnglish", 8));
     on_pushButton_Refresh_released();
+
+    update_ui();
 }
 
 Dialog::~Dialog()
@@ -32,6 +36,8 @@ void Dialog::on_pushButton_reboot_released()
     }
     else
         device_not_connect();
+
+    update_ui();
 }
 
 
@@ -49,6 +55,7 @@ void Dialog::on_pushButton_Refresh_released()
        // ui->label_connect_state->setTextColor(QColor("red"));
         ui->label_connect_state->setText("未连接");
     }
+    update_ui(is_connect);
 }
 // remount /system
 void Dialog::on_pushButton_remount_system_released()
@@ -56,7 +63,8 @@ void Dialog::on_pushButton_remount_system_released()
     on_pushButton_Refresh_released();
     if(true == is_connect)
     {
-        int ret = backup::do_cmd_return_str("adb shell mount -o remount,rw /system 2>&1", ui->textEdit_result);
+        int ret = backup::do_cmd_return_str("adb shell busybox mount -o remount,rw /system 2>&1", ui->textEdit_result);
+        //int ret = backup::do_remount_system();
         if(ret != 0)
             update_result(msg_alert, "Remount system Error!\n");
         else
@@ -64,6 +72,7 @@ void Dialog::on_pushButton_remount_system_released()
     }
     else
         device_not_connect();
+    update_ui();
 }
 
 // remount /
@@ -133,7 +142,10 @@ void Dialog::on_pushButton_mult_run_released()
 
     on_pushButton_Refresh_released();
     if(true != is_connect)
+    {
+        device_not_connect();
         return;
+    }
 
     ui->pushButton_mult_run->setEnabled(false);
     if(ui->checkBox_update_services->checkState() == Qt::Checked)
@@ -187,6 +199,12 @@ void Dialog::on_pushButton_update_services_jni_released()
     }
 }
 
+void Dialog::device_not_connect()
+{
+    check_tag(ui->textEdit_result);
+    update_result(msg_alert, "Device is not connect!\n");
+}
+
 void Dialog::update_result(int level, const QString qstring)
 {
     check_tag(ui->textEdit_result);
@@ -210,11 +228,7 @@ void Dialog::update_result(int level, const QString qstring)
     backup::update_result(ui->textEdit_result, line);
 }
 
-void Dialog::device_not_connect()
-{
-    check_tag(ui->textEdit_result);
-    update_result(msg_alert, "Device is not connect!\n");
-}
+
 
 void Dialog::check_tag(QTextEdit* textedit)
 {
@@ -224,5 +238,50 @@ void Dialog::check_tag(QTextEdit* textedit)
 //        backup::update_result(ui->textEdit_result, line);
 }
 
+void Dialog::fill_all_push_button(QPushButton *push_button[10], int length)
+{
+    for(int i=0; i<length; i++)
+        push_button[i] = NULL;
+
+    push_button[0] = ui->pushButton_Settings;
+    push_button[1] = ui->pushButton_remount_system;
+    push_button[2] = ui->pushButton_remount_root;
+    push_button[3] = ui->pushButton_update_framework;
+    push_button[4] = ui->pushButton_update_services;
+    push_button[5] = ui->pushButton_update_services_jni;
+    push_button[6] = ui->pushButton_update_hardware;
+    push_button[7] = ui->pushButton_update_apk;
+    push_button[8] = ui->pushButton_reboot;
+    push_button[9] = ui->pushButton_mult_run;
+}
+#define PUSH_BUTTON_MAX_NUMBER 10
+
+void Dialog::on_pushButton_released()
+{
+    is_connect = !is_connect;
+    update_ui();
+}
 
 
+void Dialog::update_ui(bool disable)
+{
+    update_button_state(disable, push_button, PUSH_BUTTON_MAX_NUMBER);
+}
+
+void Dialog::update_ui()
+{
+    update_button_state(is_connect && !is_current_thread_run, push_button, PUSH_BUTTON_MAX_NUMBER);
+}
+
+void Dialog::update_button_state(bool is_able, QPushButton *push_button[], int length)
+{
+    for(int i=0; i< length ; i++)
+        if(push_button[i] != NULL)
+            push_button[i]->setDisabled(!is_able);
+
+}
+
+void Dialog::on_create()
+{
+    fill_all_push_button(push_button, PUSH_BUTTON_MAX_NUMBER);
+}

@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "ui_dialog.h"
 #include <QtCore>
+#include <qpushbutton.h>
 
 namespace Ui {
 class Dialog;
@@ -16,7 +17,8 @@ class Dialog : public QDialog
 public:
     explicit Dialog(QWidget *parent = 0);
     ~Dialog();
-    bool is_connect;
+    volatile bool is_connect;
+    volatile bool is_current_thread_run;
     void update_result(int level, const QString qstring);
     void device_not_connect();
     void check_tag(QTextEdit* textedit);
@@ -46,8 +48,20 @@ private slots:
 
     void on_pushButton_update_services_jni_released();
 
+    void on_pushButton_released();
+
 private:
     Ui::Dialog *ui;
+
+
+private:
+    QPushButton *push_button[10];
+    void fill_all_push_button(QPushButton *push_button[10], int length);
+    void update_ui(bool is_connect);
+    void update_ui();
+    void update_button_state(bool is_able, QPushButton *push_button[], int length);
+    void update_file_change_light(void);
+    void on_create();
 };
 
 #endif // DIALOG_H
