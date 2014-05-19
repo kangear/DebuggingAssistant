@@ -14,9 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         dialog.cpp \
-    backup.cpp
+    backup.cpp \
+    task.cpp \
+    netlink.cpp
 
 HEADERS  += dialog.h \
-    backup.h
+    backup.h \
+    task.h
 
 FORMS    += dialog.ui

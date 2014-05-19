@@ -63,11 +63,15 @@ private slots:
 private:
     Ui::Dialog *ui;
 
+public slots:
+    void event_hotplug();
+
 // public func
 public:
     void err_log(const QString info);
     bool check_if_can_run(bool is_print_log);
     bool check_if_device_connect();
+
 
 private:
 #define PUSH_BUTTON_MAX_NUMBER 20

@@ -1,6 +1,7 @@
 #include "dialog.h"
 #include "ui_dialog.h"
 #include "backup.h"
+#include "task.h"
 
 #include <QtCore>
 
@@ -10,12 +11,30 @@ Dialog::Dialog(QWidget *parent) :
 {
     ui->setupUi(this);
     on_create();
+
+    QThread *thread = new QThread( );
+    Task    *task   = new Task();
+    task->moveToThread(thread);
+    connect( thread, SIGNAL(started()), task, SLOT(doWork()) );
+    connect( task, SIGNAL(event_hotplug()), this, SLOT(event_hotplug()) );
+    connect( task, SIGNAL(workFinished()), thread, SLOT(quit()) );
+    //automatically delete thread and task object when work is done:
+    connect( thread, SIGNAL(finished()), task, SLOT(deleteLater()) );
+    connect( thread, SIGNAL(finished()), thread, SLOT(deleteLater()) );
+    thread->start();
 }
 
 Dialog::~Dialog()
 {
     delete ui;
 }
+
+void Dialog::event_hotplug()
+{
+    //qDebug() << "hotplug_callback";
+    update_ui();
+}
+
 // reboot device
 void Dialog::on_pushButton_reboot_released()
 {
