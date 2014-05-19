@@ -12,3 +12,14 @@ source build/envsetup.sh
 adb remount
 
 adb sync
+
+待添加功能
+=================
+
+1. Sync system
+
+adb sync -p ${android_product_out} system
+
+2. Sync data
+
+adb sync -p ${android_product_out} data
