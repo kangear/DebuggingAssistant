@@ -60,6 +60,10 @@ private slots:
 
     void on_lineEdit_target_product_textChanged(const QString &arg1);
 
+    void on_pushButton_sync_system_released();
+
+    void on_pushButton_sync_data_released();
+
 private:
     Ui::Dialog *ui;
 

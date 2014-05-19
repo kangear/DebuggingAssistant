@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>721</width>
+    <width>767</width>
     <height>412</height>
    </rect>
   </property>
@@ -384,17 +384,17 @@
   <widget class="QTextEdit" name="textEdit_result">
    <property name="geometry">
     <rect>
-     <x>343</x>
+     <x>393</x>
      <y>130</y>
      <width>361</width>
      <height>271</height>
     </rect>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>342</x>
+     <x>392</x>
      <y>11</y>
      <width>361</width>
      <height>110</height>
@@ -508,10 +508,37 @@
     </item>
    </layout>
   </widget>
+  <widget class="QPushButton" name="pushButton_sync_system">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>100</y>
+     <width>99</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Sync /system</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_sync_data">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>220</y>
+     <width>99</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Sync /data</string>
+   </property>
+  </widget>
   <zorder>layoutWidget</zorder>
   <zorder>layoutWidget</zorder>
   <zorder>textEdit_result</zorder>
-  <zorder>pushButton_edit_path</zorder>
+  <zorder>pushButton_sync_system</zorder>
+  <zorder>pushButton_sync_data</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

@@ -453,3 +453,39 @@ bool Dialog::check_if_can_run(bool is_print_log)
 
     return is_can_run;
 }
+
+void Dialog::on_pushButton_sync_system_released()
+{
+    if(!check_if_can_run(false))
+        return;
+
+    QString android_product_out = target_product_path;
+    if(QDir(android_product_out).exists())
+    {
+        int ret = backup::do_cmd_return_str("adb -p " + android_product_out + " sync system 2>&1", ui->textEdit_result);
+        if(ret != 0)
+            update_result(msg_alert, "Sync system Failed!\n");
+        else
+            update_result(msg_succeed, "Sync system Succeed!\n");
+    }
+    else
+        update_result(msg_alert, "No such file or directory!\n");
+}
+
+void Dialog::on_pushButton_sync_data_released()
+{
+    if(!check_if_can_run(false))
+        return;
+
+    QString android_product_out = target_product_path;
+    if(QDir(android_product_out).exists())
+    {
+        int ret = backup::do_cmd_return_str("adb -p " + android_product_out + " sync data 2>&1", ui->textEdit_result);
+        if(ret != 0)
+            update_result(msg_alert, "Sync data Failed!\n");
+        else
+            update_result(msg_succeed, "Sync data Succeed!\n");
+    }
+    else
+        update_result(msg_alert, "No such file or directory!\n");
+}
