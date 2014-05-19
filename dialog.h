@@ -52,7 +52,6 @@ private slots:
     void on_pushButton_update_services_jni_released();
 
     void on_pushButton_update_vold_released();
-    void on_pushButton_released();
 
     void on_pushButton_edit_path_released();
     bool check_path();
@@ -83,13 +82,6 @@ private:
     void update_target_product_path();
     void update_target_file_path();
 
-    //absolute relative
-    // framework_jar_relative_path
-    // FRAMEWORK_JAR_ABSOLUTE_PATH = target_product_path + "/" + FRAMEWORK_JAR_RELATIVE_PATH;
-    //        framework.jar system/framework/framework.jar
-    //         services.jar system/framework/services.jar
-    //libandroid_servers.so system/lib/libandroid_servers.so
-    //                 vold system/bin/vold
     QString framework_jar_absolute_path;
     QString services_jar_absolute_path;
     QString servers_so_absolute_path;

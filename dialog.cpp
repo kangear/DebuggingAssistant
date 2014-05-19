@@ -10,11 +10,6 @@ Dialog::Dialog(QWidget *parent) :
 {
     ui->setupUi(this);
     on_create();
-
-    ui->textEdit_result->setFont (QFont ("OldEnglish", 8));
-    on_pushButton_Refresh_released();
-
-    update_ui();
 }
 
 Dialog::~Dialog()
@@ -24,38 +19,23 @@ Dialog::~Dialog()
 // reboot device
 void Dialog::on_pushButton_reboot_released()
 {
-    on_pushButton_Refresh_released();
-    if(true == is_connect)
-    {
-        int ret = backup::do_cmd_return_str("adb reboot 2>&1", ui->textEdit_result);
-        if(ret != 0)
-            update_result(msg_alert, "Reboot failed!");
-        else
-            update_result(msg_succeed, "Reboot succeed!");
+    if(!check_if_can_run(false))
+        return;
 
-    }
+    int ret = backup::do_cmd_return_str("adb reboot 2>&1", ui->textEdit_result);
+    if(ret != 0)
+        update_result(msg_alert, "Reboot failed!");
     else
-        device_not_connect();
+        update_result(msg_succeed, "Reboot succeed!");
 
     update_ui();
 }
 
 
-// refreash connect state
+// refreash ui
 void Dialog::on_pushButton_Refresh_released()
 {
-    if(true == backup::is_connect())
-    {
-        is_connect = true;
-        ui->label_connect_state->setText("已连接");
-    }
-    else
-    {
-        is_connect = false;
-       // ui->label_connect_state->setTextColor(QColor("red"));
-        ui->label_connect_state->setText("未连接");
-    }
-    update_ui(is_connect);
+    update_ui();
 }
 
 bool Dialog::check_if_device_connect()
@@ -64,14 +44,13 @@ bool Dialog::check_if_device_connect()
     if(true == backup::is_connect())
     {
         is_connect = true;
-        ui->label_connect_state->setText("已连接");
+        ui->label_connect_state->setText("<font color='blue'>已连接!</font>");
         ret = true;
     }
     else
     {
         is_connect = false;
-       // ui->label_connect_state->setTextColor(QColor("red"));
-        ui->label_connect_state->setText("未连接");
+        ui->label_connect_state->setText("<font color='red'>未连接!</font>");
     }
     return ret;
 }
@@ -79,92 +58,70 @@ bool Dialog::check_if_device_connect()
 // remount /system
 void Dialog::on_pushButton_remount_system_released()
 {
-    on_pushButton_Refresh_released();
-    if(true == is_connect)
-    {
-        int ret = backup::do_cmd_return_str("adb shell busybox mount -o remount,rw /system 2>&1", ui->textEdit_result);
-        //int ret = backup::do_remount_system();
-        if(ret != 0)
-            update_result(msg_alert, "Remount system Error!\n");
-        else
-            update_result(msg_succeed, "Remount system ok!\n");
-    }
+    if(!check_if_can_run(false))
+        return;
+    int ret = backup::do_cmd_return_str("adb shell busybox mount -o remount,rw /system 2>&1", ui->textEdit_result);
+    //int ret = backup::do_remount_system();
+    if(ret != 0)
+        update_result(msg_alert, "Remount system Error!\n");
     else
-        device_not_connect();
+        update_result(msg_succeed, "Remount system ok!\n");
+
     update_ui();
 }
 
 // remount /
 void Dialog::on_pushButton_remount_root_released()
 {
-    on_pushButton_Refresh_released();
-    if(true == is_connect)
-    {
-        int ret = backup::do_cmd_return_str("adb shell mount -o remount,rw / 2>&1", ui->textEdit_result);
-        if(ret != 0)
-            update_result(msg_alert, "Remount root Error!\n");
-        else
-            update_result(msg_succeed, "Remount root ok!\n");
-    }
+    if(!check_if_can_run(false))
+        return;
+    int ret = backup::do_cmd_return_str("adb shell busybox mount -o remount,rw / 2>&1", ui->textEdit_result);
+    if(ret != 0)
+        update_result(msg_alert, "Remount root Error!\n");
     else
-        device_not_connect();
+        update_result(msg_succeed, "Remount root ok!\n");
 }
 
 // update framework.jar
 void Dialog::on_pushButton_update_framework_released()
 {
-    on_pushButton_Refresh_released();
-    if(true == is_connect)
-    {
-        int ret = backup::do_cmd_return_str(get_cmd_update_framework_jar(), ui->textEdit_result);
-        if(ret != 0)
-            update_result(msg_alert, "Update framework Error!\n");
-        else
-            update_result(msg_succeed, "Update framework ok!\n");
-    }
+    if(!check_if_can_run(false))
+        return;
+    int ret = backup::do_cmd_return_str(get_cmd_update_framework_jar(), ui->textEdit_result);
+    if(ret != 0)
+        update_result(msg_alert, "Update framework Error!\n");
     else
-        device_not_connect();
+        update_result(msg_succeed, "Update framework ok!\n");
 }
 
 // update services.jar
 void Dialog::on_pushButton_update_services_released()
 {
-    on_pushButton_Refresh_released();
-    if(true == is_connect)
-    {
-        int ret = backup::do_cmd_return_str(get_cmd_update_services_jar(), ui->textEdit_result);
-        if(ret != 0)
-            update_result(msg_alert, "Update services java Error!\n");
-        else
-            update_result(msg_succeed, "Update services java ok!\n");
-    }
+    if(!check_if_can_run(false))
+        return;
+    int ret = backup::do_cmd_return_str(get_cmd_update_services_jar(), ui->textEdit_result);
+    if(ret != 0)
+        update_result(msg_alert, "Update services java Error!\n");
     else
-        device_not_connect();
+        update_result(msg_succeed, "Update services java ok!\n");
 }
 
 void Dialog::on_pushButton_update_apk_released()
 {
-    on_pushButton_Refresh_released();
-    if(true == is_connect)
-    {
-        if(system("adb") != 0)
-            qDebug("Update apk Error!\n");
-        else
-            qDebug("Update apk ok!\n");
-    }
+    if(!check_if_can_run(false))
+        return;
+    if(system("adb") != 0)
+        qDebug("Update apk Error!\n");
     else
-        device_not_connect();
+        qDebug("Update apk ok!\n");
 }
 
 void Dialog::on_pushButton_mult_run_released()
 {
 
-    on_pushButton_Refresh_released();
-    if(true != is_connect)
-    {
-        device_not_connect();
+    if(!check_if_can_run(false))
         return;
-    }
+
     ui->pushButton_mult_run->setEnabled(false);
 
     // remount system
@@ -206,35 +163,26 @@ void Dialog::on_pushButton_mult_run_released()
 // update hardware
 void Dialog::on_pushButton_update_hardware_released()
 {
-    on_pushButton_Refresh_released();
-    if(true == is_connect)
-    {
-        int ret = backup::do_cmd_return_str("adb push /home/kangear/ybk-hw/ybkMisc/out/target/product/rk30sdk/system/lib/hw/print.default.so /system/lib/hw/ 2>&1", ui->textEdit_result);
-        if(ret != 0)
-            update_result(msg_alert, "Update hardware Error!\n");
-        else
-            update_result(msg_succeed, "Update hardware ok!\n");
-    }
+    if(!check_if_can_run(false))
+        return;
+    int ret = backup::do_cmd_return_str("adb push /home/kangear/ybk-hw/ybkMisc/out/target/product/rk30sdk/system/lib/hw/print.default.so /system/lib/hw/ 2>&1", ui->textEdit_result);
+    if(ret != 0)
+        update_result(msg_alert, "Update hardware Error!\n");
     else
-        device_not_connect();
+        update_result(msg_succeed, "Update hardware ok!\n");
 }
 
 // update services jni
 void Dialog::on_pushButton_update_services_jni_released()
 {
-    on_pushButton_Refresh_released();
-    if(true == is_connect)
-    {
-        int ret = backup::do_cmd_return_str(get_cmd_update_servers_so(), ui->textEdit_result);
-        if(ret != 0)
-            update_result(msg_alert, "Update services jni now Error!\n");
-        else
-            update_result(msg_succeed, "Update services jni now ok!\n");
-    }
+    if(!check_if_can_run(false))
+        return;
+    int ret = backup::do_cmd_return_str(get_cmd_update_servers_so(), ui->textEdit_result);
+    if(ret != 0)
+        update_result(msg_alert, "Update services jni now Error!\n");
     else
-    {
-        device_not_connect();
-    }
+        update_result(msg_succeed, "Update services jni now ok!\n");
+
 }
 
 void Dialog::update_result(int level, const QString qstring)
@@ -258,32 +206,6 @@ void Dialog::update_result(int level, const QString qstring)
     backup::update_result(ui->textEdit_result, line);
 }
 
-void Dialog::update_result(int level, bool is_endline, const QString qstring)
-{
-    QString line = qstring;
-    QString alertHtml = "<font color=\"Red\">";
-    QString notifyHtml = "<font color=\"Lime\">";
-    QString infoHtml = "<font color=\"Black\">";
-    QString succeedHtml = "<font color=\"Blue\">";
-    QString endHtml = "</font><br>";
-
-    switch(level)
-    {
-        case msg_alert: line = alertHtml % line % endHtml + "--------------------------------"; break;
-        case msg_notify: line = notifyHtml % line; break;
-        case msg_info: line = infoHtml % line; break;
-        case msg_succeed: line = succeedHtml % line % endHtml + "--------------------------------"; break;
-        default: line = infoHtml % line; break;
-    }
-    line = line % endHtml;
-    backup::update_result(ui->textEdit_result, line);
-}
-
-void Dialog::device_not_connect()
-{
-    update_result(msg_alert, "No such file or directory!\n");
-}
-
 void Dialog::err_log(const QString info)
 {
     update_result(msg_alert, info);
@@ -297,9 +219,7 @@ void Dialog::on_pushButton_update_vold_released()
 
     if(QFile(framework_jar_absolute_path).exists())
     {
-        //int ret = backup::do_cmd_return_str("adb push /home/kangear/ybk-hw/ybkMisc/out/target/product/rk30sdk/system/bin/vold /system/bin && adb shell setprop ctl.stop vold && adb shell setprop ctl.start vold 2>&1", ui->textEdit_result);
-        if(debug) update_result(msg_info,"$ " + get_cmd_update_framework_jar());
-        int ret = backup::do_cmd_return_str(get_cmd_update_framework_jar(), ui->textEdit_result);
+        int ret = backup::do_cmd_return_str(get_cmd_update_vold_bin(), ui->textEdit_result);
         if(ret != 0)
             update_result(msg_alert, "Update vold Failed!\n");
         else
@@ -332,24 +252,11 @@ void Dialog::fill_all_push_button(QPushButton *push_button[10], int length)
     push_button[10] = ui->pushButton_update_vold;
 }
 
-void Dialog::on_pushButton_released()
-{
-    is_connect = !is_connect;
-    update_ui();
-    update_target_product_path();
-}
-
-
-void Dialog::update_ui(bool disable)
-{
-    check_if_can_run(false);
-    update_button_state(is_can_run, push_button, PUSH_BUTTON_MAX_NUMBER);
-}
-
 void Dialog::update_ui()
 {
     check_if_can_run(false);
     update_button_state(is_can_run, push_button, PUSH_BUTTON_MAX_NUMBER);
+    update_target_product_path();
 }
 
 void Dialog::update_button_state(bool is_able, QPushButton *push_button[], int length)
@@ -372,15 +279,17 @@ void Dialog::on_create()
     is_current_thread_run = false;
     is_can_run = true;
 
-    //
+    // update ui
     update_ui();
+
+    ui->textEdit_result->setFont (QFont ("OldEnglish", 8));
 
 }
 
 void Dialog::update_target_product_path()
 {
     target_product_path = ui->lineEdit_android_source->text() + "/out/target/product/" + ui->lineEdit_target_product->text();
-    qDebug() << target_product_path;
+    if(false)qDebug() << target_product_path;
 }
 
 void Dialog::update_target_file_path()
@@ -509,23 +418,19 @@ bool Dialog::check_if_can_run(bool is_print_log)
         if(is_print_log)
             err_log("Please save path first!");
         is_can_run = false;
-        goto err;
     }
     if(!check_path())
     {
         if(is_print_log)
             err_log("Path is not exist!");
         is_can_run = false;
-        goto err;
     }
     if(!check_if_device_connect())
     {
         if(is_print_log)
             err_log("Device is not connected!");
         is_can_run = false;
-        goto err;
     }
 
-err:
     return is_can_run;
 }
